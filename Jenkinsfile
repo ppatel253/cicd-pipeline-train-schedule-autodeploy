@@ -3,6 +3,7 @@ pipeline {
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "ppatel253/train-schedule"
+        def dockerhubaccountid = "ppatel253"
         
     }
     stages {
