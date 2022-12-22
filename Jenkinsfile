@@ -42,9 +42,9 @@ pipeline {
 //             }
 //         }
         stage('CanaryDeploy') {
-            when {
-                branch 'master'
-            }
+//             when {
+//                 branch 'master'
+//             }
             environment { 
                 CANARY_REPLICAS = 1
             }
@@ -57,9 +57,9 @@ pipeline {
             }
         }
         stage('DeployToProduction') {
-            when {
-                branch 'master'
-            }
+//             when {
+//                 branch 'master'
+//             }
             environment { 
                 CANARY_REPLICAS = 0
             }
