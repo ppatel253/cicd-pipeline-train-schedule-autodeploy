@@ -34,49 +34,49 @@ pipeline {
                 }
             }
         }
-//         stage('Deploy') {
+        stage('Deploy') {
+            steps {
+                withKubeConfig([credentialsId: 'kubernetes-admin@kubernetes', serverUrl: 'https://172.31.81.175:6443']) {
+                    sh 'kubectl apply -f train-schedule-kube.yml'
+                }
+            }
+        }
+//         stage('CanaryDeploy') {
+//             when {
+//                 branch 'master'
+//             }
+//             environment { 
+//                 CANARY_REPLICAS = 1
+//             }
 //             steps {
-//                 withKubeConfig([credentialsId: 'kubernetes-admin@kubernetes', serverUrl: 'https://172.31.81.175:6443']) {
-//                     sh 'kubectl apply -f train-schedule-kube.yml'
-//                 }
+//                 kubernetesDeploy(
+//                     kubeconfigId: 'kubeconfig',
+//                     configs: 'train-schedule-kube-canary.yml',
+//                     enableConfigSubstitution: true
+//                 )
 //             }
 //         }
-        stage('CanaryDeploy') {
+//         stage('DeployToProduction') {
 //             when {
 //                 branch 'master'
 //             }
-            environment { 
-                CANARY_REPLICAS = 1
-            }
-            steps {
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube-canary.yml',
-                    enableConfigSubstitution: true
-                )
-            }
-        }
-        stage('DeployToProduction') {
-//             when {
-//                 branch 'master'
+//             environment { 
+//                 CANARY_REPLICAS = 0
 //             }
-            environment { 
-                CANARY_REPLICAS = 0
-            }
-            steps {
-                input 'Deploy to Production?'
-                milestone(1)
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube-canary.yml',
-                    enableConfigSubstitution: true
-                )
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube.yml',
-                    enableConfigSubstitution: true
-                )
-            }
-        }
+//             steps {
+//                 input 'Deploy to Production?'
+//                 milestone(1)
+//                 kubernetesDeploy(
+//                     kubeconfigId: 'kubeconfig',
+//                     configs: 'train-schedule-kube-canary.yml',
+//                     enableConfigSubstitution: true
+//                 )
+//                 kubernetesDeploy(
+//                     kubeconfigId: 'kubeconfig',
+//                     configs: 'train-schedule-kube.yml',
+//                     enableConfigSubstitution: true
+//                 )
+//             }
+//         }
     }
 }
