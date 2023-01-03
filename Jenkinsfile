@@ -36,7 +36,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                withKubeConfig([credentialsId: 'kubernetesHub', serverUrl: 'https://172.31.81.175:6443']) {
+                withKubeConfigRegistry([credentialsId: 'kubernetesHub', serverUrl: 'https://172.31.81.175:6443']) {
                     sh 'kubectl apply -f train-schedule-kube.yml'
                 }
             }
